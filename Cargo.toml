@@ -1,0 +1,19 @@
+[package]
+name = "simrail-player-logger"
+version = "0.1.0"
+authors = ["Alrianne <confidential>"]
+edition = "2021"
+
+[dependencies]
+chrono = { version = "0.4.26", features = ["serde"] }
+console_error_panic_hook = "0.1.7"
+gloo-console = "0.3.0"
+reqwest = { version = "0.11.18", features = ["json"] }
+seed = "0.10.0"
+serde = { version = "1.0.183", features = ["derive"] }
+web-time = "0.2.0"
+
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"
