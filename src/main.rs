@@ -146,7 +146,8 @@ fn view(model: &Model) -> Node<Msg> {
             log.iter().map(|l| p!(
                 style!(),
                 {
-                    let d = l.0.duration_since(web_time::UNIX_EPOCH).unwrap().as_secs();
+                    let tz = js_sys::Date::new_0().get_timezone_offset() as i64;
+                    let d = l.0.duration_since(web_time::UNIX_EPOCH).unwrap().as_secs() as i64 - tz * 60;
                     let s = d % 60;
                     let m_rem = (d - s) / 60;
                     let m = m_rem % 60;
