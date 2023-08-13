@@ -1012,11 +1012,11 @@ function __wbg_get_imports() {
         const ret = makeMutClosure(arg0, arg1, 170, __wbg_adapter_27);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper5755 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper5758 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 408, __wbg_adapter_30);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper5902 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper5905 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 428, __wbg_adapter_33);
         return addHeapObject(ret);
     };
@@ -1058,7 +1058,7 @@ async function __wbg_init(input) {
     if (wasm !== undefined) return wasm;
 
     if (typeof input === 'undefined') {
-        input = new URL('simrail-player-logger-c7a7f815f5ca39e6_bg.wasm', import.meta.url);
+        input = new URL('simrail-player-logger_bg.wasm', import.meta.url);
     }
     const imports = __wbg_get_imports();
 
