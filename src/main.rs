@@ -19,6 +19,7 @@ fn init(_: Url, order: &mut impl Orders<Msg>) -> Model {
         selected_server: "".into(),
         player_on_station: HashMap::new(),
         dark: true,
+        filter: "".into(),
     }
 }
 
@@ -27,6 +28,7 @@ struct Model {
     selected_server: String,
     player_on_station: HashMap<String, Vec<(SystemTime, String)>>,
     dark: bool,
+    filter: String,
 }
 
 enum Msg {
@@ -35,6 +37,7 @@ enum Msg {
     ServerChanged(String),
     Refresh,
     StationLoaded(Vec<Station>),
+    StationChanged(String),
     ToggleDark,
 }
 
@@ -96,6 +99,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
             }
         }
         Msg::ToggleDark => model.dark = !model.dark,
+        Msg::StationChanged(filter) => model.filter = filter,
     }
 }
 
@@ -128,11 +132,18 @@ fn view(model: &Model) -> Node<Msg> {
                 .map(|s| option![attrs!(At::Value=> s.server_code), s.server_name.clone()]),
             input_ev(Ev::Input, Msg::ServerChanged)
         ],
-            button![if model.dark {"☀"} else {"☽"}, input_ev(Ev::Click, |_| Msg::ToggleDark)],
-        div![model.player_on_station.iter().enumerate().map(|(i,(station, log))| div![
+        button![if model.dark {"☀"} else {"☽"}, input_ev(Ev::Click, |_| Msg::ToggleDark),
+        ],
+        div![
+            select![
+                option![attrs!(At::Value=> ""), ""],
+                model.player_on_station.iter().map(|(station, _)| option![attrs!(At::Value=> station.clone()), station.clone()]),
+                input_ev(Ev::Input, Msg::StationChanged)
+            ],
+            model.player_on_station.iter().filter(|(station,_)| model.filter.is_empty() || &&model.filter == station).enumerate().map(|(i,(station, log))| div![
             style!(St::BackgroundColor => if i % 2 == 0 {if model.dark {"#2b2b2b"} else {"#dfdfdf"}} else {if model.dark {"#3b3b3b"} else {"#cfcfcf"}}),
             p!(station.clone()),
-            log.iter().enumerate().map(|(i,l)| p!(
+            log.iter().map(|l| p!(
                 style!(),
                 {
                     let d = l.0.duration_since(web_time::UNIX_EPOCH).unwrap().as_secs();
@@ -145,7 +156,7 @@ fn view(model: &Model) -> Node<Msg> {
                 },
                 " ",
                 if l.1 == "BOT" {a!("BOT")} else{
-                    a!(attrs!(At::Href=> format!("https://steamcommunity.com/profiles/{}",l.1.clone())),l.1.clone())
+                    a!(attrs!(At::Href=> format!("https://steamcommunity.com/profiles/{}",l.1.clone()), At::Target => "_blank"),l.1.clone())
                 }
             ))
         ])]
