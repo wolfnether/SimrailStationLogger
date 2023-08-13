@@ -153,7 +153,7 @@ fn view(model: &Model) -> Node<Msg> {
                     let m = m_rem % 60;
                     let h_rem = (m_rem - m) / 60;
                     let h = h_rem % 24;
-                    a!(h,":",m,":",s)
+                    format!("{h:02}:{m:02}:{s:02}")
                 },
                 " ",
                 if l.1 == "BOT" {a!("BOT")} else{
